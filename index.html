@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SnapVault – Visual Stories by Anshuman</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#080808;--charcoal:#111;--white:#f8f8f8;--gold:#c9a84c;--muted:#666}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;cursor:none}
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .15s}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,168,76,.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all .2s ease}
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.8rem 5%;mix-blend-mode:difference}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;letter-spacing:.12em;color:var(--white)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:rgba(248,248,248,.6);text-decoration:none;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;transition:.2s}
+.nav-links a:hover{color:var(--white)}
+.hero{height:100vh;display:flex;align-items:flex-end;padding:0 5% 8rem;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.3) 60%,rgba(8,8,8,.1) 100%)}
+.hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(201,168,76,.08),transparent 60%)}
+.hero-content{position:relative;z-index:1;max-width:700px}
+.hero-tag{color:var(--gold);font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;margin-bottom:1.5rem;font-weight:500}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;line-height:1;margin-bottom:1.5rem}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{color:rgba(248,248,248,.5);font-size:.95rem;line-height:1.8;max-width:400px;margin-bottom:2rem}
+.hero-cta{display:inline-flex;align-items:center;gap:.8rem;color:var(--white);text-decoration:none;font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--gold);padding-bottom:.3rem;transition:.2s}
+.hero-cta:hover{color:var(--gold)}
+.work-section{padding:5rem 0}
+.work-header{padding:0 5% 3rem;display:flex;justify-content:space-between;align-items:flex-end}
+.work-header h2{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300}
+.work-header p{color:var(--muted);font-size:.88rem;max-width:300px;line-height:1.6;text-align:right}
+.gallery-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:180px;gap:4px;padding:0 5%}
+.gal{background:var(--charcoal);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(248,248,248,.1);transition:.4s}
+.gal:hover{opacity:.8}
+.gal.wide{grid-column:span 7}
+.gal.narrow{grid-column:span 5}
+.gal.full{grid-column:span 12}
+.gal.med{grid-column:span 4}
+.gal1{background:linear-gradient(160deg,#1a1a1a,#2d2d2d)}
+.gal2{background:linear-gradient(160deg,#111,#222)}
+.gal3{background:linear-gradient(160deg,#181818,#2a2a2a)}
+.gal4{background:linear-gradient(160deg,#0d0d0d,#1e1e1e)}
+.gal5{background:linear-gradient(160deg,#1c1c1c,#2c2c2c)}
+.gal6{background:linear-gradient(160deg,#141414,#252525)}
+.about-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:2px}
+.about-left{padding:6rem 5%;background:var(--charcoal)}
+.about-tag{color:var(--gold);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.5rem}
+.about-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,4vw,3.5rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
+.about-left p{color:rgba(248,248,248,.55);font-size:.95rem;line-height:1.85;margin-bottom:1rem}
+.about-sig{font-family:'Cormorant Garamond',serif;font-size:2rem;font-style:italic;color:var(--gold);margin-top:2rem}
+.about-right{display:grid;grid-template-rows:1fr 1fr;gap:2px}
+.about-stat{background:linear-gradient(135deg,#131313,#1e1e1e);display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem}
+.stat-number{font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:300;color:var(--gold);line-height:1}
+.stat-text{color:var(--muted);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem}
+.services{padding:7rem 5%;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--charcoal)}
+.service{padding:3rem 2.5rem;background:var(--black);transition:.3s}
+.service:hover{background:var(--charcoal)}
+.service-num{color:var(--gold);font-size:.78rem;letter-spacing:.15em;margin-bottom:1.5rem}
+.service h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;margin-bottom:.8rem}
+.service p{color:var(--muted);font-size:.88rem;line-height:1.7}
+.contact-section{padding:7rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:6rem;background:var(--charcoal)}
+.contact-section h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:300;line-height:1.2;margin-bottom:1.5rem}
+.contact-section p{color:var(--muted);line-height:1.7;margin-bottom:2rem}
+.contact-form{display:flex;flex-direction:column;gap:1.2rem}
+.form-field{border-bottom:1px solid rgba(248,248,248,.12);padding:1rem 0;display:flex;flex-direction:column;gap:.4rem;transition:.2s}
+.form-field:focus-within{border-color:var(--gold)}
+.form-field label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.form-field input,.form-field textarea{background:transparent;border:none;color:var(--white);font-family:'Inter',sans-serif;font-size:.95rem;outline:none}
+.form-field textarea{height:80px;resize:none}
+.submit-btn{align-self:flex-start;background:transparent;color:var(--white);border:1px solid rgba(248,248,248,.25);padding:.85rem 2.5rem;font-family:'Inter',sans-serif;font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:.2s;margin-top:1rem}
+.submit-btn:hover{border-color:var(--gold);color:var(--gold)}
+footer{padding:2rem 5%;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(248,248,248,.06)}
+footer p{color:var(--muted);font-size:.8rem;letter-spacing:.06em}
+footer a{color:var(--gold);text-decoration:none}
+@media(max-width:768px){.gal.wide,.gal.narrow,.gal.med{grid-column:span 12}.about-section,.contact-section{grid-template-columns:1fr}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+<nav>
+  <div class="logo">SnapVault</div>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Visual Storyteller · Anshuman</div>
+    <h1>Light.<br/>Frame.<br/><em>Moment.</em></h1>
+    <p>Photography is the art of freezing time — giving permanence to the fleeting, beauty to the ordinary.</p>
+    <a href="#work" class="hero-cta">View Portfolio →</a>
+  </div>
+</section>
+<section class="work-section" id="work">
+  <div class="work-header">
+    <h2>Selected Work</h2>
+    <p>A curated collection of portraits, architecture, and visual narratives.</p>
+  </div>
+  <div class="gallery-grid">
+    <div class="gal gal1 wide" style="grid-row:span 2">🌆</div>
+    <div class="gal gal2 narrow">👤</div>
+    <div class="gal gal3 narrow">🏛️</div>
+    <div class="gal gal4 med" style="grid-row:span 2">🌊</div>
+    <div class="gal gal5 med">🌸</div>
+    <div class="gal gal6 med">🏙️</div>
+  </div>
+</section>
+<div class="about-section" id="about">
+  <div class="about-left">
+    <div class="about-tag">About</div>
+    <h2>Stories through light &amp; shadow</h2>
+    <p>I'm Anshuman — a visual artist and photographer based in India, drawn to the intersections of architecture, human expression, and quiet urban moments.</p>
+    <p>With over five years behind the lens, I believe every frame holds a conversation waiting to be had. My work seeks the extraordinary hidden in the familiar.</p>
+    <div class="about-sig">Anshuman</div>
+  </div>
+  <div class="about-right">
+    <div class="about-stat"><div class="stat-number">5+</div><div class="stat-text">Years of practice</div></div>
+    <div class="about-stat"><div class="stat-number">340</div><div class="stat-text">Projects completed</div></div>
+  </div>
+</div>
+<section class="services" id="services">
+  <div class="service"><div class="service-num">01</div><h3>Portrait Sessions</h3><p>Authentic, editorial-quality portraits that capture personality. Studio and on-location.</p></div>
+  <div class="service"><div class="service-num">02</div><h3>Architecture &amp; Space</h3><p>Documenting the dialogue between structure, light, and the human experience.</p></div>
+  <div class="service"><div class="service-num">03</div><h3>Event Coverage</h3><p>Unobtrusive, honest documentation of moments that matter. No poses, just truth.</p></div>
+  <div class="service"><div class="service-num">04</div><h3>Commercial &amp; Brand</h3><p>Visual identity and product photography for brands with a story worth telling.</p></div>
+</section>
+<section class="contact-section" id="contact">
+  <div>
+    <h2>Let's create something together</h2>
+    <p>Every project begins with a conversation. Tell me about yours.</p>
+    <p style="color:#c9a84c;font-size:.88rem">anshuman@snapvault.in</p>
+  </div>
+  <div class="contact-form">
+    <div class="form-field"><label>Your name</label><input type="text" placeholder="Anshuman"/></div>
+    <div class="form-field"><label>Email address</label><input type="email" placeholder="you@example.com"/></div>
+    <div class="form-field"><label>Project brief</label><textarea placeholder="Tell me about your project..."></textarea></div>
+    <button class="submit-btn">Send Enquiry</button>
+  </div>
+</section>
+<footer>
+  <p>© 2025 SnapVault · Anshuman</p>
+  <p>Built by <a href="https://github.com/goatshuman">Anshuman</a></p>
+</footer>
+<script>
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('ring');
+document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX-4+'px';cursor.style.top=e.clientY-4+'px';ring.style.left=e.clientX-18+'px';ring.style.top=e.clientY-18+'px'});
+</script>
+</body>
+</html>
